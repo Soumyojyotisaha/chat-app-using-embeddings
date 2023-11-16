@@ -1,7 +1,8 @@
-import axios from 'axios';
+import { PGChunk, PGJSon } from './types';import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { encode } from 'gpt-3-encoder';
-import { PGChunk } from './types';
+
+import fs from "fs";
 
 interface PGEssay {
     title: string;
@@ -146,20 +147,30 @@ const getChunks = async (essay: PGEssay) => {
         }
     }
 
-    return essayChunks; // Add this line to return the essayChunks
+const chunkedEssay :PGEssay={
+    ...essay,
+    chunks:essayChunks
+}
+return chunkedEssay;
 };
 
 (async () => {
     const links = await getLinks();
+    console.log(links.length);
+
     let essays: PGEssay[] = [];
 
     for (let i = 0; i < links.length; i++) {
         const link = links[i];
         const essay = await getEssay(link);
-        essays.push(essay);
-
-        // Add this line to get and log the essay chunks
-        const essayChunks = await getChunks(essay);
-        console.log(essayChunks);
+        const chunkedEssay = await getChunks(essay);
+        essays.push(chunkedEssay);
+        console.log(chunkedEssay);
     }
+
+const json:PGJSon={
+    tokens:essays.reduce((acc,essay)=>acc+essay.tokens,0),
+    essays
+};
+fs.writeFileSync("scripts/pg.json",JSON.stringify(json));
 })();
