@@ -1,4 +1,3 @@
-
 import { loadEnvConfig } from "@next/env";
 import { PGEssay, PGJSON, PGChunk } from "@/types";
 import fs from 'fs';
@@ -7,13 +6,13 @@ import { createClient } from "@supabase/supabase-js";
 
 loadEnvConfig("");
 
-interface EmbeddingResponse {
-  data: {
-    data: {
-      embedding: any; // Replace 'any' with the actual type of the embedding
-    }[];
-  };
-}
+// interface EmbeddingResponse {
+//   data: {
+//     data: {
+//       embedding: any; // Replace 'any' with the actual type of the embedding
+//     }[];
+//   };
+// }
 
 const generateEmbeddings = async (essays: PGEssay[]) => {
   const openai = new OpenAI({
@@ -26,12 +25,12 @@ const generateEmbeddings = async (essays: PGEssay[]) => {
     for (let j = 0; j < essay.chunks.length; j++) {
       const chunk = essay.chunks[j] as PGChunk;
 
-      const embeddingResponse = await (openai as any).createEmbedding({
+      const embeddingResponse = await openai.embeddings.create({
         model: 'text-embedding-ada-002',
         input: chunk.content
-      }) as EmbeddingResponse;
+      }) ;
 
-      const [{ embedding }] = embeddingResponse.data.data;
+      const [{ embedding }] = embeddingResponse.data;
       const { data, error } = await supabase
         .from('paul_graham')
         .insert({
