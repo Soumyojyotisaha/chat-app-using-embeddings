@@ -1,0 +1,47 @@
+CREATE TABLE test_pg (
+  id bigserial PRIMARY KEY,
+  essay_title text,
+  essay_url text,
+  essay_date text,
+  content text,
+  content_tokens bigint,
+  embedding vector(1536)
+);
+
+-- Assuming this was a mistake in the original queries, changing table name to test_pg
+CREATE OR REPLACE FUNCTION test_pg_search(
+  query_embedding vector(1536),
+  similarity_threshold float,
+  match_count int
+)
+RETURNS TABLE (
+  id bigint,
+  essay_title text,
+  essay_url text,
+  essay_date text,
+  content text,
+  content_tokens bigint,
+  similarity float
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  RETURN QUERY 
+  SELECT
+    id,
+    essay_title,
+    essay_url,
+    essay_date,
+    content,
+    content_tokens,
+    1 - (embedding <=> query_embedding) AS similarity
+  FROM
+    test_pg  -- Changed table name from testpaul_pg to test_pg
+  WHERE
+    1 - (embedding <=> query_embedding) > similarity_threshold
+  ORDER BY
+    embedding <=> query_embedding
+  LIMIT
+    match_count;
+END;
+$$;
