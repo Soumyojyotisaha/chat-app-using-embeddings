@@ -1,4 +1,4 @@
-import { OpenAIModel } from "C:\Users\Lenovo\Desktop\chat app using embeddings\embedding-pg\scripts\types";
+import { OpenAIModel } from "@/types";
 import { createClient } from "@supabase/supabase-js";
 import { createParser, ParsedEvent, ReconnectInterval } from "eventsource-parser";
 

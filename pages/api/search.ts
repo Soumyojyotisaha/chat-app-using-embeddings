@@ -1,5 +1,4 @@
 import { supabaseAdmin } from "@/utils";
-
 export const config = {
   runtime: "edge"
 };
@@ -14,10 +13,10 @@ const handler = async (req: Request): Promise<Response> => {
 
     const input = query.replace(/\n/g, " ");
 
-    const res = await fetch("https://api.openai.com/v1/embeddings", {
+    const response = await fetch("https://api.openai.com/v1/embeddings", {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY!}`
       },
       method: "POST",
       body: JSON.stringify({
@@ -26,12 +25,12 @@ const handler = async (req: Request): Promise<Response> => {
       })
     });
 
-    const json = await res.json();
+    const json = await response.json();
     const embedding = json.data[0].embedding;
 
-    const { data: chunks, error } = await supabaseAdmin.rpc("pg_search", {
+    const { data: chunks, error } = await supabaseAdmin.rpc("test_pg_search", {
       query_embedding: embedding,
-      similarity_threshold: 0.01,
+      similarity_threshold: 0.5,
       match_count: matches
     });
 
