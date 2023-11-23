@@ -13,11 +13,8 @@ const generateEmbeddings = async (essays: PGEssay[]) => {
 
   for (let i = 0; i < essays.length; i++) {
     const section = essays[i];
-    console.log(section.chunks);
-
     for (let j = 0; j < section.chunks.length; j++) {
       const chunk = section.chunks[j];
-
       
       const { essay_title, essay_url, essay_date, essay_thanks, content, content_length, content_tokens } = chunk;
 
@@ -30,11 +27,11 @@ const generateEmbeddings = async (essays: PGEssay[]) => {
       const { data, error } = await supabase
         .from('test_pg')
         .insert({
-          essay_title: chunk.essay_title,
-          essay_url: chunk.essay_url,
-          essay_date: chunk.essay_date,
-          content: chunk.content,
-          content_tokens: chunk.content_tokens,
+          essay_title,
+          essay_url,
+          essay_date,
+          content,
+          content_tokens,
           embedding
         })
         .select("*");
@@ -45,7 +42,7 @@ const generateEmbeddings = async (essays: PGEssay[]) => {
         console.log('saved', i, j);
       }
 
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 400));
     }
   }
 }

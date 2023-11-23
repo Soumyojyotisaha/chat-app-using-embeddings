@@ -1,5 +1,5 @@
 {
-  "name": "embedding-pg",
+  "name": "my-next-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,14 +11,12 @@
     "embed": "tsx scripts/embed.ts"
   },
   "dependencies": {
-    "endent": "^2.1.0",
-    "eventsource-parser": "^1.1.1",
-    "next": "14.0.2",
+    "@supabase/supabase-js": "^2.38.5",
+    "next": "13.5.6",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
-    "@supabase/supabase-js": "^2.38.4",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -26,12 +24,12 @@
     "axios": "^1.6.2",
     "cheerio": "^1.0.0-rc.12",
     "eslint": "^8",
-    "eslint-config-next": "14.0.2",
+    "eslint-config-next": "13.5.6",
     "gpt-3-encoder": "^1.1.4",
-    "openai": "^4.19.0",
+    "openai": "^4.20.0",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.5",
-    "tsx": "^4.1.2",
+    "tsx": "^4.3.0",
     "typescript": "^5"
   }
 }
