@@ -42,7 +42,7 @@ const generateEmbeddings = async (essays: PGEssay[]) => {
         console.log('saved', i, j);
       }
 
-      await new Promise((resolve) => setTimeout(resolve, 400));
+      await new Promise((resolve) => setTimeout(resolve, 300));
     }
   }
 }
